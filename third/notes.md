@@ -338,6 +338,7 @@ CRUD functions are available. Just like that.
 
 
 
+
 ### About the ApplicationDbContext.cs file:
 
 It is important when creating Controllers. 
