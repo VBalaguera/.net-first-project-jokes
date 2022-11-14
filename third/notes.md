@@ -333,11 +333,98 @@ Also, all [Jokes routes](https://localhost:44300/Jokes) are accessible now.
 CRUD functions are available. Just like that. 
 
 
+## MODIFYING THE LAYOUT
+
+In Views - Shared - _Layout: 
+
+```html
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="Index">Jokes</a>
+</li>
+```
+
+Why Jokes and Index? What is asp-controller and asp-action? 
+That info comes from the Jokes Controller:
+
+```cs
+// this will show all Jokes
+        public async Task<IActionResult> Index()
+        {
+              return _context.Joke != null ? 
+                          View(await _context.Joke.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Joke'  is null.");
+        }
+
+```
+
+Why not asp-controller='JokesController'? Controller is assumed. It's a naming convention. 
+
+
 ## CREATE A SEARCH JOKES FEATURE
 
+in _Layout:
 
+```html
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="ShowSearchForm">Jokes</a>
+                        </li>
+```
 
+ShowSearchForm does not exist yet. It needs to be created as a method in the JokesController.cs
 
+```cs
+        // GET: Jokes/ShowSearchForm
+
+        public async Task<IActionResult> ShowSearchForm()
+        {
+            return _context.Joke != null ?
+                    // since the name is ShowSearchForm, View() can be empty
+                        View() :
+                        Problem("Entity set 'ApplicationDbContext.Joke'  is null.");
+        }
+```
+
+By itself, this is not enough. Right click ShowSearchForm and Add View. The result will be this:
+
+```cshtml
+@model third.Models.Joke
+
+<h4>Joke</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ShowSearchForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="JokeQuestion" class="control-label"></label>
+                <input asp-for="JokeQuestion" class="form-control" />
+                <span asp-validation-for="JokeQuestion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JokeAnswer" class="control-label"></label>
+                <input asp-for="JokeAnswer" class="form-control" />
+                <span asp-validation-for="JokeAnswer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+``` 
 
 ### About the ApplicationDbContext.cs file:
 
