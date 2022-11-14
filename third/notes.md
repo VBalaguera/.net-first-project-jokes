@@ -370,7 +370,7 @@ in _Layout:
 
 ```html
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="ShowSearchForm">Jokes</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="ShowSearchForm">Search</a>
                         </li>
 ```
 
@@ -419,12 +419,76 @@ By itself, this is not enough. Right click ShowSearchForm and Add View. The resu
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+// this is for data validation
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 ``` 
+
+Modify it for whatever I need: 
+
+```cs
+
+
+<h4>Search for a Joke</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ShowSearchResults">
+            
+
+            <div class="form-group">
+                <label for="SearchPhrase" class="control-label"></label>
+                <input name="SearchPhrase" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+```
+
+ShowSearchResults is next. Time to modify the JokesController again:
+
+```cs
+        // POST: Jokes/ShowSearchResults
+
+        public string ShowSearchResults(String SearchPhrase)
+        {
+            return
+
+                        "You entered: " + SearchPhrase;
+        }
+```
+
+This is for testing purposes. Final version is: 
+
+```cs
+
+        // POST: Jokes/ShowSearchResults
+
+        public async Task<IActionResult> ShowSearchResults(String SearchPhrase)
+        {
+            return _context.Joke != null ?
+                        // Index view with filtered data
+                        View("Index", await _context.Joke.Where(j => j.JokeQuestion.Contains(SearchPhrase)).ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Joke'  is null.");
+        }
+```
+
+## LOGIN AND REGISTRATION
+
+
+
 
 ### About the ApplicationDbContext.cs file:
 
