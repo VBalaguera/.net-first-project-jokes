@@ -13,6 +13,7 @@ Controllers.
 about learning resources
 Currently using this video: https://www.youtube.com/watch?v=BfEjDD8mWYg&t=463s&ab_channel=freeCodeCamp.org
 
-Also, stopped at 29:26.
+
+Project is ready to be used and explored.
 
 ## deployment

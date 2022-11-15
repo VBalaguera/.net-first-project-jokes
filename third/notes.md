@@ -487,8 +487,59 @@ This is for testing purposes. Final version is:
 
 ## LOGIN AND REGISTRATION
 
+Let's make users register and login if they want to create and edit questions. 
+On the JokeController:
+
+```cs
+        // GET: Jokes/Create
+        [Authorize]
+        // using AspNetCore.Authorization library here
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // just use [Authorize] with everything you need to protect. 
+```
+
+Just like that. Register and Login are on now!
 
 
+## STYLING WITH CSS!
+
+In the folder root - wwwroot there are two important folders: css and lib. 
+
+This is site.css: 
+
+```css
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+  color: #fff !important; 
+}
+
+body {
+  margin-bottom: 60px;
+  color: #fff !important; 
+  background-color: #003153;
+}
+```
+
+[DOCS about email&account confirmation when using ASP.NET Core](https://learn.microsoft.com/es-es/aspnet/core/security/authentication/accconfirm?view=aspnetcore-7.0&tabs=visual-studio). 
 
 ### About the ApplicationDbContext.cs file:
 
